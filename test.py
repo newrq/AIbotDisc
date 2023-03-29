@@ -2,10 +2,10 @@ import disnake
 from disnake.ext import commands
 import openai
 
-token = 'token'
+token = 'TOKEN'
 bot = commands.Bot(command_prefix="*", intents=disnake.Intents.all())
-serverGuild = [1041342566773309461]
-openai.api_key = "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"
+serverGuild = [servId]
+openai.api_key = "API_KEY"
 
 
 @bot.event
@@ -25,17 +25,16 @@ async def on_message(message: disnake.InteractionMessage):
 
 
 @bot.slash_command(name="ai", description="Спросить аи что-то.", guild_ids=[1041342566773309461])
-async def askAI(message, userniput: str):
-    await message.send("Генерирую...")
-    aiText = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "user", "content": userniput}
-        ],
+async def askai(message: disnake.CommandInteraction, userniput: str,):
+    print(f"{message.user}")
+    await bot.get_channel(1075880230989860925).send("Ответ:")
+    aiText = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=userniput
+        ,
         max_tokens=2340,
         temperature=1
     )
-    await message.send(aiText['choices'][0]['message']['content'])
-
+    await message.send(aiText['choices'][0]['text'])
 
 bot.run(token)
